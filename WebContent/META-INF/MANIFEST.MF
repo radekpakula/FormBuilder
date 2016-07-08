@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Implementation-Title: FormBuilders
+Implementation-Version: 1.0.4
+Vaadin-Package-Version: 1
+Class-Path: 
+
