@@ -99,7 +99,7 @@ public class FormBuilder<T> implements Serializable{
 				}
 				buildSingleComponent(l, ff,prefix);
 			}else if(!ff.getInnerForm().isEmpty()){
-				iterateOverFormObject(l,ff.getInnerForm(),ff.getFieldName()+".");
+				iterateOverFormObject(l,ff.getInnerForm(),prefix+ff.getFieldName()+".");
 			}
 		}
 	}
