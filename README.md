@@ -9,7 +9,46 @@ It supports any vaadin components implement interface AbstractComponent like Nat
 Extension use default vaadin itembinder to bind values
 
 # Simple usage
-FormBuilder<User> fb = new FormBuilder<User>(User.class,userObject);
+	//Create formBuilder
+	FormBuilder<User> fb = new FormBuilder<User>(User.class,new User());
+	
+	//set width for all fields
+	fb.setFieldWidth(300,Unit.PIXELS);
+	
+	//add listener to field
+	fb.getField("name").addValueChangeListener(listener);
+	
+	//check if form is valid
+	fb.isVAlid();
+	
+	//or check bind and commit all form
+	boolean commit=fb.validAndCommit();
+	
+	//Set disable field
+	fb.setDisableField(list);
+	
+	//refresh all form when add new disable or hidden fields
+	fb.refreshForm();
+	
+	//Bind new component without auto create
+	fb.bind(new TextArea(), "propertyId")
+	
+	//or build and bin
+	fb.buildAndBind("Field label", "propertyId", MyField.class)
+	
+	//change or get datasource object
+	fb.setItemDataSource(new User());
+	User u = fb.getItemDataSource();
+	
+	//build all fields without formName param
+	FormLayot ff = (FormLayout) fb.buildForm();
+	
+	//build another form from the same class
+	FormLayout ff = (FormLayout) fb.buildForm(FormName.COL1);
+	
+	//build form but in another component
+	CssLayout l = (CssLayout)fb.buildForm(new CssLayout());
+	
 content.addComponent(fb.buildForm);
 
 #FormField example usage
