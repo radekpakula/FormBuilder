@@ -48,8 +48,6 @@ Extension use default vaadin itembinder to bind values
 	
 	//build form but in another component
 	CssLayout l = (CssLayout)fb.buildForm(new CssLayout());
-	
-content.addComponent(fb.buildForm);
 
 #FormField example usage
 	@FormField("My label)
@@ -65,9 +63,13 @@ content.addComponent(fb.buildForm);
 	@FormField(value="DisableField",disable=true)
 	private String disableField;
 	
-	@Nullable
+	@Nullable(value=false,message="You must provide something"
 	@FormField(value="Bank number")
 	private String canNotBeEmpty;
+	
+	@Regex(message="example 00-000",regex="\\w{2}-\\w{3}")
+	@FormField(value="Postal code")
+	private String postalCode;
 	
 	@FormField(value="UserGroup select",componentClass=MyComponent.class)
 	private Group group;
