@@ -36,17 +36,17 @@ content.addComponent(fb.buildForm);
 	---Getter and Setter for all fields are required!--
 	
 #Form field description
--name() default "";  - field label
--value() default ""; - field label (value=name)
--formName() default FormName.NONE ; -form group. One field can have many @FormField
--position() default 1; - component position in layout
--display() default true; - determines whether the component is to be created or not
--disable() default false; - create field whit disable value
--type() default FieldType.DEFAULT; 
-	only for string field. Available value is:
-	DEFAULT, TEXTAREA, PASSWORD;
--componentClass() default FormField.class; - could by any component created by developer. SelectList, combobox etc.
--width() default -1; component width. Default is auto.
+	-name() default "";  - field label
+	-value() default ""; - field label (value=name)
+	-formName() default FormName.NONE ; -form group. One field can have many @FormField
+	-position() default 1; - component position in layout
+	-display() default true; - determines whether the component is to be created or not
+	-disable() default false; - create field whit disable value
+	-type() default FieldType.DEFAULT; 
+		only for string field. Available value is:
+		DEFAULT, TEXTAREA, PASSWORD;
+	-componentClass() default FormField.class; - could by any component created by developer. SelectList, combobox etc.
+	-width() default -1; component width. Default is auto.
 
 # Relase note
 1.0.5
