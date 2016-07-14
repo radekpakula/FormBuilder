@@ -2,6 +2,7 @@ package pl.formbuilder;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -10,19 +11,17 @@ import java.util.List;
  */
 public class FormReader {
 
-	public static List<FormObject> readForm(Class<?> clazz, FormName formName) {
-		return readForm(clazz.getDeclaredFields(), formName, false);
+	public static List<FormObject> readForm(Class<?> clazz, FormName formName,boolean withSuperClass) {
+		return readForm(extractFields(clazz,withSuperClass), formName, false,withSuperClass);
 	}
-
-	public static List<FormObject> readForm(Class<?> clazz, boolean withHidden) {
-		return readForm(clazz.getDeclaredFields(), null, withHidden);
+	private static Field[] extractFields(Class<?> clazz, boolean withSuperClass) {
+		if(withSuperClass){
+			List<Field> ff=getAllFields(new ArrayList<Field>(), clazz);
+			return ff.toArray(new Field[ff.size()]);
+		}
+		return clazz.getDeclaredFields();
 	}
-
-	public static List<FormObject> readForm(Field[] fields, boolean withHidden) {
-		return readForm(fields, null, withHidden);
-	}
-
-	public static List<FormObject> readForm(Field[] fields, FormName formName, boolean withHidden) {
+	private static List<FormObject> readForm(Field[] fields, FormName formName, boolean withHidden,boolean withSuperClass) {
 		List<FormObject> formData = new ArrayList<FormObject>();
 		for (Field field : fields) {
 			FormField[] f = field.getAnnotationsByType(FormField.class);
@@ -48,11 +47,11 @@ public class FormReader {
 					for (InnerForm in : ins) {
 						if (formName == null) {
 							if (in.formName().equals(FormName.NONE)) {
-								buildInForm(formName, withHidden, formData, field, in);
+								buildInForm(formName, withHidden, formData, field, in,withSuperClass);
 							}
 						} else {
 							if (formName.equals(in.formName())) {
-								buildInForm(formName, withHidden, formData, field, in);
+								buildInForm(formName, withHidden, formData, field, in,withSuperClass);
 							}
 						}
 					}
@@ -68,9 +67,18 @@ public class FormReader {
 		return formData;
 	}
 
+	private static List<Field> getAllFields(List<Field> fields, Class<?> clazz) {
+		fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+
+	    if (clazz.getSuperclass() != null) {
+	        fields = getAllFields(fields, clazz.getSuperclass());
+	    }
+	    return fields;
+	}
+	
 	private static void buildInForm(FormName formName, boolean withHidden, List<FormObject> formData, Field field,
-			InnerForm in) {
-		List<FormObject> inner = readForm(field.getType().getDeclaredFields(), in.innerFormName(), withHidden);
+			InnerForm in, boolean withSuperClass) {
+		List<FormObject> inner = readForm(field.getType().getDeclaredFields(), in.innerFormName(), withHidden,withSuperClass);
 		FormObject object = new FormObject();
 		object.setFieldName(field.getName());
 		object.setInnerForm(inner);

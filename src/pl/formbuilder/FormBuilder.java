@@ -51,6 +51,7 @@ public class FormBuilder<T> implements Serializable{
 	private boolean activeForm=false;
 	private boolean formatCheckbox=true;
 	private DefaultFieldGroupFieldFactory fieldFactory;
+	private boolean superClass=false;
 	public FormBuilder(Class<T> z,BeanFieldGroup<T> binder){
 		this.clazz=z;
 		this.binder=binder;
@@ -58,6 +59,20 @@ public class FormBuilder<T> implements Serializable{
 	public FormBuilder(Class<T> z,T item){
 		this.clazz=z;
 		this.binder=new BeanFieldGroup<T>(z);
+		if(item==null){
+			try {
+				item = clazz.getConstructor().newInstance(new Object[]{});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		disableFields=new ArrayList<String>();
+		binder.setItemDataSource(item);
+	}
+	public FormBuilder(Class<T> z,T item,boolean superClass){
+		this.clazz=z;
+		this.binder=new BeanFieldGroup<T>(z);
+		this.superClass=superClass;
 		if(item==null){
 			try {
 				item = clazz.getConstructor().newInstance(new Object[]{});
@@ -84,13 +99,14 @@ public class FormBuilder<T> implements Serializable{
 		if(formData==null){
 			formData=new ArrayList<FormObject>();
 		}
-		List<FormObject> formDataNew = FormReader.readForm(clazz,formName);
+		List<FormObject> formDataNew = FormReader.readForm(clazz,formName,superClass);
 		iterateOverFormObject(l, formDataNew,"");
 		formData.addAll(formDataNew);
 		refreshDisableField();
 		refreshInvisibleField();
 		return l;
 	}
+	
 	private void iterateOverFormObject(AbstractLayout l, List<FormObject> formDataNew,String prefix) {
 		for(FormObject ff : formDataNew){
 			if(ff.getInnerForm()==null){
