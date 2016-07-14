@@ -80,7 +80,7 @@ Extension use default vaadin itembinder to bind values
 	-name() default "";  - field label
 	-value() default ""; - field label (value=name)
 	-formName() default FormName.NONE ; -form group. One field can have many @FormField
-	-position() default 1; - component position in layout
+	-position() default 1; - component order in form
 	-display() default true; - determines whether the component is to be created or not
 	-disable() default false; - create field whit disable value
 	-type() default FieldType.DEFAULT; 
