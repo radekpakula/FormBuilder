@@ -113,7 +113,12 @@ public class FormBuilder<T> implements Serializable{
 				if(!ff.isVisible()){
 					continue;
 				}
-				buildSingleComponent(l, ff,prefix);
+				Field<?> field = binder.getField(ff.getFieldName());
+				if(field!=null){
+					configureFied(l, ff, prefix, field);
+				}else{
+					buildSingleComponent(l, ff,prefix);
+				}
 			}else if(!ff.getInnerForm().isEmpty()){
 				iterateOverFormObject(l,ff.getInnerForm(),prefix+ff.getFieldName()+".");
 			}
@@ -132,6 +137,9 @@ public class FormBuilder<T> implements Serializable{
 		}else{
 			c = createDefaultField(ff, prefix);
 		}
+		return configureFied(l, ff, prefix, c);
+	}
+	private Field<?> configureFied(AbstractLayout l, FormObject ff, String prefix, Field<?> c) {
 		c.setCaption(ff.getFieldName());
 		if(ff.getWidth()>0){
 			c.setWidth(ff.getWidth(),Unit.PIXELS);
