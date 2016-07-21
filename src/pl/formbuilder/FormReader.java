@@ -78,7 +78,7 @@ public class FormReader {
 	
 	private static void buildInForm(FormName formName, boolean withHidden, List<FormObject> formData, Field field,
 			InnerForm in, boolean withSuperClass) {
-		List<FormObject> inner = readForm(field.getType().getDeclaredFields(), in.innerFormName(), withHidden,withSuperClass);
+		List<FormObject> inner = readForm(field.getType().getDeclaredFields(), formName, withHidden,withSuperClass);
 		FormObject object = new FormObject();
 		object.setFieldName(field.getName());
 		object.setInnerForm(inner);
